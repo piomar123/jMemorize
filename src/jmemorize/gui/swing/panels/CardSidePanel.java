@@ -41,19 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.ImageIcon;
-import javax.swing.InputMap;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JEditorPane;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.CaretListener;
@@ -95,10 +83,16 @@ public class CardSidePanel extends JPanel
     {
         private Image     m_image;
         private int       m_padding = 2;
+        private JLabel    label;
 
-        public void setImageToDisplay(Image imageToDisplay)
+        public ScaledImagePanel(){
+            label = new JLabel();
+            add(label);
+        }
+
+        public void setImageToDisplay(Icon imageToDisplay)
         {
-            m_image = imageToDisplay;
+            label.setIcon(imageToDisplay);
         }
 
         @Override
@@ -106,51 +100,51 @@ public class CardSidePanel extends JPanel
         {
             super.paintComponent(g);
             
-            if (m_image == null)
-                return;
+//            if (m_image == null)
+//                return;
             
-            int imgWidth = m_image.getWidth(null);
-            int imgHeight = m_image.getHeight(null);
-            
-            Dimension dimension = getSize();
-            int w = dimension.width;
-            int h = dimension.height;
-            int padding = 0;
-            
-            if (imgWidth > w || imgHeight > h)
-            {
-                float ratio = imgWidth / (float)w;
-                h = (int)(imgHeight / ratio);
-                
-                if (h > dimension.height)
-                {
-                    h = dimension.height;
-                    ratio = imgHeight / (float)h;
-                    w = (int)(imgWidth/ ratio);
-                }
-                
-                padding = m_padding;
-            }
-            else
-            {
-                w = imgWidth;
-                h = imgHeight;
-            }
-            
-            int left = padding + (dimension.width  - w) / 2;
-            int top  = padding + (dimension.height - h) / 2;
-            
-            if (g instanceof Graphics2D)
-            {
-                Graphics2D g2d = (Graphics2D)g;
-                
-                g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                    RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-            }
-            
-            g.drawImage(m_image, 
-                left, top, left + w - 2*padding, top + h - 2*padding, 
-                0, 0, imgWidth, imgHeight, null);
+//            int imgWidth = m_image.getWidth(null);
+//            int imgHeight = m_image.getHeight(null);
+//
+//            Dimension dimension = getSize();
+//            int w = dimension.width;
+//            int h = dimension.height;
+//            int padding = 0;
+//
+//            if (imgWidth > w || imgHeight > h)
+//            {
+//                float ratio = imgWidth / (float)w;
+//                h = (int)(imgHeight / ratio);
+//
+//                if (h > dimension.height)
+//                {
+//                    h = dimension.height;
+//                    ratio = imgHeight / (float)h;
+//                    w = (int)(imgWidth/ ratio);
+//                }
+//
+//                padding = m_padding;
+//            }
+//            else
+//            {
+//                w = imgWidth;
+//                h = imgHeight;
+//            }
+//
+//            int left = padding + (dimension.width  - w) / 2;
+//            int top  = padding + (dimension.height - h) / 2;
+//
+//            if (g instanceof Graphics2D)
+//            {
+//                Graphics2D g2d = (Graphics2D)g;
+//
+//                g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+//                    RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+//            }
+//
+//            g.drawImage(m_image,
+//                left, top, left + w - 2*padding, top + h - 2*padding,
+//                0, 0, imgWidth, imgHeight, null);
         }
     }
     
@@ -543,7 +537,7 @@ public class CardSidePanel extends JPanel
                 Localization.get(LC.IMAGE), m_currentImage + 1, imgCount);
             
             m_imageLabel.setText(text);
-            m_imagePanel.setImageToDisplay(m_images.get(m_currentImage).getImage());
+            m_imagePanel.setImageToDisplay(m_images.get(m_currentImage));
             m_imagePanel.repaint();
         }
     }
